@@ -1,0 +1,106 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ 
+</head>
+
+<body class="sub_page">
+
+  <div class="hero_area">
+  </div>
+
+  <!-- contact section -->
+
+  <section class="contact_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form_container">
+            <div class="heading_container">
+              <h2>
+                SignUp
+              </h2>
+              {% if msg %}
+                {{msg}}
+              {% endif %}
+            </div>
+            <form action="{% url 'signup' %}" method="POST">
+              {% csrf_token %}
+               <div>
+                <input type="radio" name="usertype" value="user" />User
+                <input type="radio" name="usertype" value="seller" />Seller
+              </div>
+              <div>
+                <input type="text" placeholder="First Name " name="fname"/>
+              </div>
+               <div>
+                <input type="text" placeholder="Last Name " name="lname" />
+              </div>
+              <div>
+                <input type="email" placeholder="Email" name="email" id="email"/>
+                <span id="email_error"></span>
+              </div>
+              <div>
+                <input type="text" placeholder="Mobile" name="mobile" />
+              </div>
+              <div>
+                <textarea placeholder="ADDRESS" rows="5" cols="67" name="address"/></textarea>
+              </div>
+
+              <div>
+                <input type="password" placeholder="Password" name="password" />
+              </div>
+              <div>
+                <input type="password" placeholder="Confirm Password" name="cpassword" />
+              </div>
+              
+              <div class="d-flex ">
+                <button type="submit">
+                  Signup
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="img-box">
+            <img src="{% static 'images/contact-img.jpg' %}" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end contact section -->
+
+ <script>
+   $("#email").change(function(){
+     var email=$(this).val();
+     $.ajax({
+        url:'/validate_email/',
+        data:{
+          'email':email
+        },
+        dataType:'json',
+        success:function(data){
+          if(data.is_taken){
+            document.getElementById('email_error').innerHTML="Email Already Registered";
+          }
+          else{
+            document.getElementById('email_error').innerHTML="";
+          }
+        }
+
+     });
+   });
+ </script>
+
+</body>
+
+</html>
+
+{% endblock %}

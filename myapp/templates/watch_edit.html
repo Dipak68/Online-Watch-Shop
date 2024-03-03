@@ -1,0 +1,75 @@
+{% extends 'seller_header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ 
+</head>
+
+<body class="sub_page">
+
+  <div class="hero_area">
+  </div>
+
+  <!-- contact section -->
+
+  <section class="contact_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form_container">
+            <div class="heading_container">
+              <h2>
+                EDIT Watch
+              </h2>
+              {% if msg %}
+                {{msg}}
+              {% endif %}
+            </div>
+            <form action="{% url 'watch_edit' pk=watch.pk %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+  
+               
+              <div>
+                <input type="text" placeholder="Model Drand " name="watch_brand" value="{{watch.watch_brand}}" readonly />
+                <input type="text" placeholder="Model No " name="watch_model" value="{{watch.watch_model}}" />
+              </div>
+              <div>
+                <textarea placeholder="Watch Description" rows="5" cols="67" name="watch_desc"/>{{watch.watch_desc}}</textarea>
+              </div>
+              <br>
+              <div>
+                <input type="text" placeholder="Price " name="watch_price"/ value="{{watch.watch_price}}">
+              </div>
+              <div>
+                <input type="file" name="watch_image" >
+              </div>
+
+              <div class="d-flex ">
+                <button type="submit">
+                  Update Watch
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="img-box">
+            <img src="{{watch.watch_image.url}}" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end contact section -->
+
+ 
+
+</body>
+
+</html>
+
+{% endblock %}

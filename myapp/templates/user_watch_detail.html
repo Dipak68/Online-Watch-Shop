@@ -1,0 +1,108 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ 
+</head>
+
+<body class="sub_page">
+
+  <div class="hero_area">
+
+    <!-- header section strats -->
+    
+    <!-- end header section -->
+  </div>
+
+  <!-- shop section -->
+
+  <section class="shop_section layout_padding">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          Latest Watches
+        </h2>
+      </div>
+      <div class="row">
+        
+        <div class="col-sm-6 col-xl-4">
+          <div class="box">
+            
+              <div class="img-box">
+                <img src="{{watch.watch_image.url}}" alt="">
+              </div>
+              <div class="detail-box">
+                <h6>
+                  {{watch.watch_brand}}
+                </h6>
+                <h6>
+                  Price:
+                  <span>
+                    {{watch.watch_price}}
+                  </span>
+                </h6>
+              </div>
+              <div class="detail-box">
+                <h6>
+                  MODEL :-{{watch.watch_model}}
+                </h6>
+              </div>
+              <div class="detail-box">
+                <h6>
+                  DESCRIPTION :-{{watch.watch_desc}}
+                </h6>
+              </div>
+              <h6>
+                  SELLER :-{{watch.watch_seller}}
+                </h6>
+              </div>
+              
+
+              <h5>
+
+                {% if cart_flag %}
+                  <a href="{% url 'remove_from_cart' pk=watch.pk %}"><input type="button" name="action" value="Remove From Cart" class="btn btn-primary"></a>
+                {% else %}
+                  <a href="{% url 'add_to_cart' pk=watch.pk %}"><input type="button" name="action" value="Add TO Cart" class="btn btn-primary"></a>
+                {% endif %}
+
+
+                {% if wishlist_flag %}
+                  <a href="{% url 'remove_from_wishlist' pk=watch.pk %}" style="margin-left: 15px;"><input type="button" name="action" value="Remove from Wishlist" class="btn btn-danger"></a>
+                {% else %}
+                  <a href="{% url 'add_to_wishlist' pk=watch.pk %}" style="margin-left: 50px;"><input type="button" name="action" value="Add To Wishlist" class="btn btn-danger"></a>
+                {% endif %}
+                
+
+              </h5>
+              <div class="new">
+                <span>
+                  New
+                </span>
+              </div>
+            
+          </div>
+        </div>
+        
+      </div>
+      <div class="btn-box">
+        <a href="">
+          View All
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- end shop section -->
+
+  <!-- footer section -->
+  
+
+</body>
+
+</html>
+
+{% endblock %}

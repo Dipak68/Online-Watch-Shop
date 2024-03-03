@@ -1,0 +1,70 @@
+{% extends 'header.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ 
+</head>
+
+<body class="sub_page">
+
+  <div class="hero_area">
+  </div>
+
+  <!-- contact section -->
+
+  <section class="contact_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form_container">
+            <div class="heading_container">
+              <h2>
+                Contact Us
+              </h2>
+              {% if msg %}
+                {{msg}}
+              {% endif %}
+            </div>
+            <form action="{% url 'contact' %}" method="POST">
+              {% csrf_token %}
+              <div>
+                <input type="text" placeholder="Full Name " name="name" />
+              </div>
+              <div>
+                <input type="email" placeholder="Email" name="email" />
+              </div>
+              <div>
+                <input type="text" placeholder="Phone number" name="mobile" />
+              </div>
+              <div>
+                <input type="text" class="message-box" placeholder="Message" name="message" />
+              </div>
+              <div class="d-flex ">
+                <button type="submit">
+                  SEND
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="img-box">
+            <img src="{% static 'images/contact-img.jpg' %}" alt="">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end contact section -->
+
+ 
+
+</body>
+
+</html>
+
+{% endblock %}
