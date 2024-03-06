@@ -22,48 +22,42 @@
           <div class="form_container">
             <div class="heading_container">
               <h2>
-                SignUp
+                Profile
               </h2>
               {% if msg %}
                 {{msg}}
               {% endif %}
             </div>
-            <form action="{% url 'signup' %}" method="POST" enctype="multipart/form-data">
+            <form action="{% url 'profile' %}" method="POST" enctype="multipart/form-data">
               {% csrf_token %}
+              <div align="center">
+                <img src="{{user.image.url}}" width="100px" height="100px" >
+              </div>
+               <br>
+               <br>
+              <div>
+                <input type="text" placeholder="First Name " name="fname" value="{{user.fname}}" />
+              </div>
                <div>
-                <input type="radio" name="usertype" value="user" />User
-                <input type="radio" name="usertype" value="seller" />Seller
+                <input type="text" placeholder="Last Name " name="lname" value="{{user.lname}}"/>
               </div>
               <div>
-                <input type="text" placeholder="First Name " name="fname"/>
-              </div>
-               <div>
-                <input type="text" placeholder="Last Name " name="lname" />
-              </div>
-              <div>
-                <input type="email" placeholder="Email" name="email" id="email" />
+                <input type="email" placeholder="Email" name="email" id="email" readonly="readonly" value="{{user.email}}"/>
                 <span id="email_error"></span>
               </div>
               <div>
-                <input type="text" placeholder="Mobile" name="mobile" />
+                <input type="text" placeholder="Mobile" name="mobile" value="{{user.mobile}}"/>
               </div>
               <div>
-                <textarea placeholder="ADDRESS" rows="5" cols="67" name="address"/></textarea>
-              </div>
-
-              <div>
-                <input type="password" placeholder="Password" name="password" />
+                <textarea placeholder="ADDRESS" rows="5" cols="67" name="address"/>{{user.address}}</textarea>
               </div>
               <div>
-                <input type="password" placeholder="Confirm Password" name="cpassword" />
-              </div>
-              <div>
-                <input type="file" placeholder="Profile Pic" name="image" />
+                <input type="file" placeholder="Profile Pic" name="image"/>
               </div>
               
               <div class="d-flex ">
                 <button type="submit">
-                  Signup
+                  Update Profile
                 </button>
               </div>
             </form>

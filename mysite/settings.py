@@ -25,7 +25,7 @@ SECRET_KEY = 'aquvrir&ysca#^3s@hi-(g(p)e2th^wim3m$fgy#&#y2qv)n$s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','.pythonanywhere.com']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','.pythonanywhere']
 
 
 # Application definition
@@ -129,3 +129,11 @@ PAYTM_SECRET_KEY = '<your_paytm_secret_key>'
 PAYTM_WEBSITE = 'WEBSTAGING'
 PAYTM_CHANNEL_ID = 'WEB'
 PAYTM_INDUSTRY_TYPE_ID = 'Retail'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER ="dipakdjango68@gmail.com"
+EMAIL_HOST_PASSWORD ="gkiwdqnhnplddgwe"

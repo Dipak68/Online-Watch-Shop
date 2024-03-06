@@ -21,28 +21,28 @@
         <div class="col-md-6">
           <div class="form_container">
             <div class="heading_container">
-              <h2>
-                Login
-              </h2>
+              <h2>Enter OTP</h2>
                 {% if msg %}
                   {{msg}}
                 {% endif %}
             </div>
-            <form action="{% url 'login' %}" method="POST">
+            <form action="{% url 'otp' %}" method="POST">
               {% csrf_token %}
               <div>
-                <input type="email" placeholder="Email" name="email" id="email"/>
-                <span id="email_error"></span>
+                <input type="hidden" name="otp" value="{{otp}}">
               </div>
               <div>
-                <input type="password" placeholder="Password" name="password" />
+                <input type="hidden" name="email" value="{{email}}">
               </div>
-              <div class="d-flex ">
-                <button type="submit">
-                  Login
-                </button>
-                <a href="{% url 'forgot_password'%}"><button type="button" name="action" value="Forgot Password" style="margin-left: 50px;">Forgot Password</button></a>
-              </div>      
+
+              <div class="d-flex">
+                <input type="text" name="uotp" placeholder="Enter OTP" required>
+                
+              </div>
+              
+              
+                <button type="submit">Verify OTP</button>
+                
             </form>
           </div>
         </div>

@@ -76,11 +76,25 @@
                 <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
               </li>
               {% if request.session.email %}
-               <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Logout({{request.session.fname}})</a>
-              </li>
+              
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'myorder' %}">My Order</a>
+                  <a class="nav-link" href="{% url 'myorder' %}">My Order</a>
+                  </li>
+              
+               
+              <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="{{request.session.email}}">My Account<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile' %}">Profile<img src="{{user.image.url}}" width="30px" height="30px" ></a>
+                  </li>
+                  
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'change_password' %}">Change Password({{request.session.fname}})</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout({{request.session.fname}})</a>
+                  </li>
+                </ul>
               </li>
               {% else %}
               <li class="nav-item">

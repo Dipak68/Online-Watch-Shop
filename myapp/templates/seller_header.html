@@ -37,14 +37,13 @@
   e.preventDefault(); 
 }, false);
 </script>
-
 <SCRIPT type="text/javascript">
   window.history.forward();
   function noBack() { window.history.forward(); }
 </SCRIPT>
 </HEAD>
 <BODY onload="noBack();" 
-  onpageshow="if (event.persisted) noBack();" onunload=""oncopy="return false" oncut="return false" onpaste="return false">
+  onpageshow="if (event.persisted) noBack();" onunload="" oncopy="return false" oncut="return false" onpaste="return false">
 
   <div class="hero_area">
     <!-- header section strats -->
@@ -74,8 +73,19 @@
               </li>
               
               {% if request.session.email %}
-               <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Logout({{request.session.fname}})</a>
+               <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">My Account<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile' %}">Profile<img src="{{user.image.url}}" width="30px" height="30px" ></a>
+                  </li>
+                  
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'change_password' %}">Change Password({{request.session.fname}})</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout({{request.session.fname}})</a>
+                  </li>
+                </ul>
               </li>
               {% else %}
               <li class="nav-item">
@@ -149,13 +159,13 @@
               <a href="">
                 <i class="fa fa-phone" aria-hidden="true"></i>
                 <span>
-                  Call +01 1234567890
+                  Call +91 9662634200
                 </span>
               </a>
               <a href="">
                 <i class="fa fa-envelope" aria-hidden="true"></i>
                 <span>
-                  demo@gmail.com
+                  goswamidipak68@gmail.com
                 </span>
               </a>
             </div>

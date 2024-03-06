@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import User,Watch,Contact,Wishlist,Cart,Transaction
 from django.conf import settings
+from django.core.mail import send_mail
+import random
 from .paytm import generate_checksum, verify_checksum
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
@@ -14,6 +16,7 @@ def validate_email(request):
 	}
 	return JsonResponse(data)
 
+
 def search(request):
 	if request.method=="POST":
 		search_watch=request.POST['search_watch']
@@ -26,6 +29,7 @@ def myorder(request):
 	user=User.objects.get(email=request.session['email'])
 	carts=Cart.objects.filter(user=user,payment_status="completed")
 	return render(request,'myorder.html',{'carts':carts})
+
 def initiate_payment(request):
     user=User.objects.get(email=request.session['email'])
     try:
@@ -117,10 +121,12 @@ def contact(request):
 				mobile=request.POST['mobile'],
 				message=request.POST['message']
 			)
+		contacts=Contact.objects.all().order_by("-id")[:3]
 		msg="Contact Save Successfully"
-		return render(request,'contact.html',{'msg':msg})
+		return render(request,'contact.html',{'msg':msg ,'contacts':contacts})
 	else:
-		return render(request,'contact.html')
+		contacts=Contact.objects.all().order_by("-id")[:3]
+		return render(request,'contact.html',{'contacts':contacts})
 
 def signup(request):
 	if request.method=="POST":
@@ -138,7 +144,8 @@ def signup(request):
 					mobile=request.POST['mobile'],
 					address=request.POST['address'],
 					password=request.POST['password'],
-					cpassword=request.POST['cpassword']	
+					cpassword=request.POST['cpassword'],	
+					image=request.FILES['image'],
 					)
 				msg="User Sign Up Successfully"
 				return render(request,'login.html',{'msg':msg})
@@ -159,6 +166,7 @@ def login(request):
 			if user.usertype=="user":
 				request.session['fname']=user.fname
 				request.session['email']=user.email
+				request.session['image']=user.image.url
 				wishlists=Wishlist.objects.filter(user=user)
 				request.session['wishlist_count']=len(wishlists)
 				carts=Cart.objects.filter(user=user)
@@ -180,9 +188,94 @@ def logout(request):
 		del request.session['email']
 		del request.session['wishlist_count']
 		del request.session['cart_count']
+		del request.session['image']
 		return render(request,'login.html')
 	except:
 		return render(request,'login.html')
+
+def forgot_password(request):
+	if request.method=="POST":
+		email=request.POST['email']
+		try:
+			user=User.objects.get(email=email)
+			otp=random.randint(1000,9999)
+			subject = 'OTP For Forgot Password'
+			message = 'Hello user, Your OTP For Forgot Password is'+str(otp)
+			email_from = settings.EMAIL_HOST_USER
+			recipient_list = [user.email, ]
+			send_mail( subject, message, email_from, recipient_list )
+			return render(request,'otp.html',{'otp':otp , 'email':email })
+		except:
+			msg="Email Not Registerd"
+			return render(request,'forgot_password.html',{'msg':msg})
+	else:
+		return render(request,'forgot_password.html')
+
+def otp(request):
+	otp=request.POST['otp']
+	uotp=request.POST['uotp']
+	email=request.POST['email']
+
+	if otp==uotp:
+		return render(request,'new_password.html',{'email':email})
+	else:
+		mag="Enter OTP is invalid"
+		return render(request,'otp.html',{'otp':otp , 'email':email , 'msg':msg})
+
+def new_password(request):
+	email=request.POST['email']
+	password=request.POST['password']
+	cpassword=request.POST['cpassword']
+
+	if password==cpassword:
+		user=User.objects.get(email=email)
+		user.password=password
+		user.cpassword=password
+		user.save()
+		msg="Password Updated successfully"
+		return render(request,'login.html',{'msg':msg})
+	else:
+		msg="Password & Confirm Password Dose note matched"
+		return render(request,'new_password.html',{'msg':msg,'email':email})
+
+def change_password(request):
+	if request.method=="POST":
+		user=User.objects.get(email=request.session['email'])
+		if user.password==request.POST['old_password']:
+			if request.POST['new_password']==request.POST['cnew_password']:
+				user.password=request.POST['new_password']
+				user.cpassword=request.POST['new_password']
+				user.save()
+				return redirect('logout')
+			else:
+				msg="New Password & Confirm New Password Dose note matched"
+				return render(request,'change_password.html',{'msg':msg})
+		else:
+			msg="Old Password is Incorrect"
+			return render(request,'change_password.html',{'msg':msg})
+	else:
+		return render(request,'change_password.html')
+
+def profile(request):
+	user=User.objects.get(email=request.session['email'])
+	if request.method=="POST":
+		user.fname=request.POST['fname']
+		user.lname=request.POST['lname']
+		user.email=request.POST['email']
+		user.mobile=request.POST['mobile']
+		user.address=request.POST['address']
+		try:
+			user.image=request.FILES['image']
+		except:
+			pass
+		user.save()
+		request.session['image']=user.image.url
+		msg="Profile Update successfully"
+		return render(request,'profile.html',{'user':user, 'msg':msg})
+
+
+	else:
+		return render(request,'profile.html',{'user':user})
 
 
 def add_watches(request):

@@ -48,6 +48,16 @@
                 </button>
               </div>
             </form>
+            <br>
+            <div class="heading_container">
+              <h2>Recent Contact</h2>
+              <hr>
+              {% for i in contacts %}
+                  Name : {{i.name}}<br>
+                  Message : {{i.message}}<br>
+              <hr>
+              {% endfor %}
+              </div>
           </div>
         </div>
         <div class="col-md-6">
@@ -58,7 +68,7 @@
       </div>
     </div>
   </section>
-
+ 
   <!-- end contact section -->
 
  

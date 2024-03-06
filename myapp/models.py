@@ -11,6 +11,7 @@ class User(models.Model):
 	password=models.CharField(max_length=100)
 	cpassword=models.CharField(max_length=100)
 	usertype=models.CharField(max_length=100,default="user")
+	image=models.ImageField(upload_to="image/", default="", null=True, blank=True)
 
 
 	def __str__(self):
@@ -42,7 +43,8 @@ class Contact(models.Model):
 
 
 	def __str__(self):
-		return self.name
+		return self.name+" - "+self.email
+		
 class Wishlist(models.Model):
 	user=models.ForeignKey(User,on_delete=models.CASCADE)
 	watch=models.ForeignKey(Watch,on_delete=models.CASCADE)
